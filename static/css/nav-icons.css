@@ -1,0 +1,52 @@
+.camera-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 6px;
+}
+
+.camera-status-dot.online {
+    background-color: #10B981;  /* green-500 */
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.camera-status-dot.offline {
+    background-color: #EF4444;  /* red-500 */
+    box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+}
+
+.camera-status-dot.waiting {
+    background-color: #F59E0B;  /* yellow-500 */
+    box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
+
+.camera-count-badge {
+    @apply inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full;
+}
+
+/* Add to existing styles.css */
+.nav-icon {
+    @apply -ml-0.5 mr-2 h-4 w-4;
+}
+
+/* Navigation Links */
+.nav-link {
+    @apply inline-flex items-center px-4 py-2 text-sm font-medium rounded-md;
+}
+
+.nav-link:not(.active) {
+    @apply text-gray-600 hover:text-gray-900 hover:bg-gray-50;
+}
+
+.nav-link.active {
+    @apply bg-gray-100 text-gray-900;
+}
+
+.nav-link svg {
+    @apply text-gray-400 group-hover:text-gray-500;
+}
+
+.nav-link.active svg {
+    @apply text-gray-500;
+}

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <div class="bg-white shadow-md rounded-lg overflow-hidden">
+        <!-- Teacher Info Section -->
+        <div class="p-6 border-b border-gray-200">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">{{ teacher.get_full_name }}</h2>
+                    <div class="mt-2 text-sm text-gray-600">
+                        <p class="mb-1">
+                            <span class="font-medium">{% trans "Email:" %}</span> {{ teacher.email }}
+                        </p>
+                        <p class="mb-1">
+                            <span class="font-medium">{% trans "Telefon:" %}</span> {{ teacher.phone_number }}
+                        </p>
+                        <p>
+                            <span class="font-medium">{% trans "Ro'yxatdan o'tgan sana:" %}</span> {{ teacher.date_joined|date:"d.m.Y" }}
+                        </p>
+                    </div>
+                </div>
+                <div class="flex space-x-3">
+                    <a href="{% url 'app:teacher_edit' teacher.pk %}" 
+                        class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                        <svg class="-ml-1 mr-2 h-5 w-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                        </svg>
+                        {% trans "Tahrirlash" %}
+                    </a>
+                    <a href="{% url 'app:teacher_delete' teacher.pk %}" 
+                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700">
+                        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        {% trans "O'chirish" %}
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teacher's Groups Section -->
+        <div class="p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">{% trans "O'qituvchining guruhlari" %}</h3>
+            {% if groups %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                {% trans "Guruh nomi" %}
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                {% trans "Bo'lim" %}
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                {% trans "O'quvchilar soni" %}
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                {% trans "Boshlanish sanasi" %}
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                {% trans "Tugash sanasi" %}
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for group in groups %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <a href="{% url 'app:group_detail' group.pk %}" class="text-blue-600 hover:text-blue-900">
+                                    {{ group.name }}
+                                </a>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ group.department.name }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ group.students.count }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ group.start_date|date:"d.m.Y" }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ group.end_date|date:"d.m.Y" }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-4 text-gray-500">
+                {% trans "O'qituvchiga hech qanday guruh biriktirilmagan" %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

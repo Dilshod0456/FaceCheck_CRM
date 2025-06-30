@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% load i18n %}
+    {% load report_filters %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>{% block title %}{% endblock %}</title>
+    {% block styles %}{% endblock %}
+    {% block scripts %}{% endblock %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;700&display=swap">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+    <style>
+        body {
+            zoom: 0.9;
+            -moz-transform: scale(0.9);
+            -moz-transform-origin: 0 0;
+        }
+        .main-content {
+            margin-left: 19rem;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+        @media (max-width: 1024px) {
+            .main-content {
+                margin-left: 0;
+            }
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-200 text-gray-900 font-nunito-sans min-h-screen ">
+    {% include "details/nav.html" %}
+    {% include "details/messages.html" %}
+    <main class="main-content">
+        {% include "details/header.html" %}
+        {% block content %}{% endblock %}
+    </main>
+    {% include "details/footer.html" %}
+</body>
+</html>

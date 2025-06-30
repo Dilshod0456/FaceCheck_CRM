@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg p-6 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">{% trans "Guruhni tahrirlash" %}</h2>
+
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="grid grid-cols-1 gap-6">
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">{% trans "Guruh nomi" %}</label>
+                <input type="text" name="name" id="name" required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    value="{{ group.name }}"
+                    placeholder="{% trans 'Guruh nomini kiriting' %}">
+            </div>
+
+            <div>
+                <label for="department" class="block text-sm font-medium text-gray-700">{% trans "Bo'lim" %}</label>
+                <select name="department" id="department" required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    {% for department in departments %}
+                    <option value="{{ department.id }}" {% if department.id == group.department.id %}selected{% endif %}>
+                        {{ department.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="teacher" class="block text-sm font-medium text-gray-700">{% trans "O'qituvchi" %}</label>
+                <select name="teacher" id="teacher" required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    {% for teacher in teachers %}
+                    <option value="{{ teacher.id }}" {% if teacher.id == group.teacher.id %}selected{% endif %}>
+                        {{ teacher.get_full_name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="start_date" class="block text-sm font-medium text-gray-700">{% trans "Boshlanish sanasi" %}</label>
+                    <input type="date" name="start_date" id="start_date" required
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        value="{{ group.start_date|date:'Y-m-d' }}">
+                </div>
+
+                <div>
+                    <label for="end_date" class="block text-sm font-medium text-gray-700">{% trans "Tugash sanasi" %}</label>
+                    <input type="date" name="end_date" id="end_date" required
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        value="{{ group.end_date|date:'Y-m-d' }}">
+                </div>
+            </div>
+
+            <div>
+                <label class="inline-flex items-center">
+                    <input type="checkbox" name="active" {% if group.active %}checked{% endif %}
+                        class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    <span class="ml-2 text-sm text-gray-700">{% trans "Guruh faol" %}</span>
+                </label>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Dars jadvali (hafta kuni va soat oraliqlari)</label>
+                <div class="space-y-2">
+                    {% for schedule in group.schedules.all %}
+                        <div class="flex items-center space-x-2">
+                            <span class="text-gray-700">{{ schedule.get_weekday_display }}:</span>
+                            <span>{{ schedule.start_time }} - {{ schedule.end_time }}</span>
+                        </div>
+                    {% empty %}
+                        <span class="text-gray-400">Jadval kiritilmagan</span>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'admin:app_groupschedule_add' %}?group={{ group.id }}" target="_blank" class="text-blue-600 hover:underline text-sm">+ Dars jadvali qo‘shish</a>
+            </div>
+        </div>
+
+        <div class="flex justify-end space-x-3">
+            <a href="{% url 'app:group_list' %}" 
+                class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                {% trans "Bekor qilish" %}
+            </a>
+            <button type="submit"
+                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                {% trans "Saqlash" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

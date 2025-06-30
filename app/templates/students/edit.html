@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mx-auto p-6">
+    <div class="bg-white rounded-xl shadow-lg">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-800">{% trans "O'quvchini tahrirlash" %}</h2>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="p-6 space-y-6">
+            {% csrf_token %}
+            <div class="grid grid-cols-2 gap-6">
+                <!-- Shaxsiy ma'lumotlar -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "O'quvchi ID" %}</label>
+                        <input type="text" name="student_id" required
+                            value="{{ student.student_id }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Ism" %}</label>
+                        <input type="text" name="first_name" required
+                            value="{{ student.user.first_name }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Familiya" %}</label>
+                        <input type="text" name="last_name" required
+                            value="{{ student.user.last_name }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Yangi parol" %} ({% trans "ixtiyoriy" %})</label>
+                        <input type="password" name="password"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Profil rasmi" %}</label>
+                        {% if student.user.profile_image %}
+                            <img src="{{ student.user.profile_image.url }}" alt="Profile Image" class="h-24 w-24 rounded-full object-cover mb-2">
+                        {% endif %}
+                        <input type="file" name="profile_image" accept="image/*" class="mt-1 block w-full text-sm text-gray-700">
+                    </div>
+                </div>
+                <!-- Qo'shimcha ma'lumotlar -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" name="email"
+                            value="{{ student.user.email }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Telefon" %}</label>
+                        <input type="tel" name="phone_number"
+                            value="{{ student.user.phone_number }}"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Guruhlar" %} ({% trans "ixtiyoriy" %})</label>
+                        <select name="groups" multiple class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            {% for group in groups %}
+                            <option value="{{ group.id }}" {% if group in student.groups.all %}selected{% endif %}>
+                                {{ group.name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Ota-onalar" %} ({% trans "ixtiyoriy" %})</label>
+                        <select name="parents" multiple class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            {% for parent in parents %}
+                            <option value="{{ parent.id }}" {% if parent in student.parents.all %}selected{% endif %}>
+                                {{ parent.get_full_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                <a href="{% url 'app:student_list' %}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    {% trans "Bekor qilish" %}
+                </a>
+                <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                    {% trans "Saqlash" %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

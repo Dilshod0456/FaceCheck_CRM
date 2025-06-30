@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg p-6 max-w-xl mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">{% trans "Bo'limni o'chirish" %}</h2>
+
+    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="ml-3">
+                <p class="text-sm text-yellow-700">
+                    {% trans "Diqqat! Bu bo'limni o'chirib tashlasangiz, unga tegishli barcha ma'lumotlar ham o'chiriladi. Bu amalni ortga qaytarib bo'lmaydi." %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+        <h3 class="text-lg font-medium text-gray-900 mb-2">{{ department.name }}</h3>
+        <p class="text-gray-600">{{ department.description }}</p>
+    </div>
+
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="flex justify-end space-x-3">
+            <a href="{% url 'app:department_list' %}" 
+                class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                {% trans "Bekor qilish" %}
+            </a>
+            <button type="submit"
+                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                {% trans "O'chirish" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

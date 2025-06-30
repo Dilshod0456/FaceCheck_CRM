@@ -1,0 +1,322 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% load report_filters %}
+
+{% block title %}{{ title }} - FaceCheck CRM{% endblock %}
+
+{% block content %}
+<div class="p-6">
+    {% if user.user_type == 'super_admin' %}
+    <!-- Super Admin Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
+        <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ total_students }}</h3>
+                    <p class="text-gray-600">{% trans "Jami talabalar" %}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-green-100 text-green-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ total_groups }}</h3>
+                    <p class="text-gray-600">{% trans "Guruhlar" %}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center">
+                <div class="p-3 rounded-full bg-purple-100 text-purple-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <h3 class="text-2xl font-semibold text-gray-800">{{ total_departments }}</h3>
+                    <p class="text-gray-600">{% trans "Bo'limlar" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Attendance -->
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h3 class="text-lg font-semibold text-gray-800">{% trans "Oxirgi davomat" %}</h3>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {% trans "Talaba" %}
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {% trans "Guruh" %}
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {% trans "Sana" %}
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            {% trans "Status" %}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for attendance in recent_attendance %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">
+                                {{ attendance.student.user.get_full_name }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900">{{ attendance.group.name }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-500">
+                                {{ attendance.date|date:"d.m.Y" }} {{ attendance.time|time:"H:i" }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                {% if attendance.status == 'present' %}bg-green-100 text-green-800
+                                {% elif attendance.status == 'late' %}bg-yellow-100 text-yellow-800
+                                {% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ attendance.get_status_display }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {% elif user.user_type == 'management' %}
+    <!-- Management Dashboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Bo'limlar statistikasi -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">{% trans "Bo'limlar statistikasi" %}</h3>
+            </div>
+            <div class="p-6">
+                {% for dept in departments %}
+                <div class="mb-4 last:mb-0">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-gray-900">{{ dept.name }}</span>
+                        <span class="text-sm text-gray-600">{{ dept.student_count }} {% trans "talaba" %}</span>
+                    </div>
+                    <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                        <div style="width:{{ dept.attendance_rate }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-blue-500"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Davomat statistikasi -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">{% trans "Davomat statistikasi" %}</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Bugungi -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Bugun" %}</h4>
+                        <div class="text-2xl font-semibold text-gray-900">{{ attendance_stats.today.present }}
+                            <span class="text-sm text-gray-600">/{{ attendance_stats.today.total }}</span>
+                        </div>
+                    </div>
+                    <!-- Haftalik -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Haftalik" %}</h4>
+                        <div class="text-2xl font-semibold text-gray-900">{{ attendance_stats.weekly.present }}
+                            <span class="text-sm text-gray-600">/{{ attendance_stats.weekly.total }}</span>
+                        </div>
+                    </div>
+                    <!-- Oylik -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Oylik" %}</h4>
+                        <div class="text-2xl font-semibold text-gray-900">{{ attendance_stats.monthly.present }}
+                            <span class="text-sm text-gray-600">/{{ attendance_stats.monthly.total }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% elif user.user_type == 'teacher' %}
+    <!-- Teacher Dashboard -->
+    <div class="space-y-6">
+        {% for group in groups %}
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">{{ group.name }}</h3>
+            </div>
+            <div class="p-6">
+                {% with stats=today_attendance|get_item:group.id %}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Jami talabalar" %}</h4>
+                        <div class="text-2xl font-semibold text-gray-900">{{ stats.total_students }}</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Bugun kelganlar" %}</h4>
+                        <div class="text-2xl font-semibold text-green-600">{{ stats.present_students }}</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Davomat" %}</h4>
+                        <div class="text-2xl font-semibold text-blue-600">{{ stats.attendance_percentage }}%</div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="{% url 'app:group_attendance' group.id %}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        {% trans "Batafsil ko'rish" %} →
+                    </a>
+                </div>
+                {% endwith %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% elif user.user_type == 'student' %}
+    <!-- Student Dashboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Davomat tarixi -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">{% trans "Davomat tarixi" %}</h3>
+            </div>
+            <div class="p-6">
+                {% with history=attendance_history %}
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Bugungi status" %}</h4>
+                        {% if history.today %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            {% if history.today.status == 'present' %}bg-green-100 text-green-800
+                            {% elif history.today.status == 'late' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ history.today.get_status_display }}
+                        </span>
+                        {% else %}
+                        <span class="text-gray-500">{% trans "Ma'lumot yo'q" %}</span>
+                        {% endif %}
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Oylik davomat" %}</h4>
+                        <div class="text-2xl font-semibold text-gray-900">
+                            {% with present_count=history.monthly|where:"status,present"|length %}
+                            {{ present_count }} / {{ history.monthly|length }}
+                            {% endwith %}
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Umumiy" %}</h4>
+                        <div class="text-2xl font-semibold text-blue-600">{{ history.total_rate }}%</div>
+                    </div>
+                </div>
+                {% endwith %}
+            </div>
+        </div>
+
+        <!-- Guruhlar -->
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">{% trans "Guruhlaringiz" %}</h3>
+            </div>
+            <div class="p-6">
+                <div class="space-y-4">
+                    {% for group in student.groups.all %}
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="text-sm font-medium text-gray-900">{{ group.name }}</h4>
+                            <p class="text-sm text-gray-600">{{ group.teacher.get_full_name }}</p>
+                        </div>
+                        <a href="{% url 'app:group_detail' group.id %}" class="text-blue-600 hover:text-blue-800 text-sm">
+                            {% trans "Batafsil" %} →
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% elif user.user_type == 'parent' %}
+    <!-- Parent Dashboard -->
+    <div class="space-y-6">
+        {% for child_id, child_data in children_attendance.items %}
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-800">{{ child_data.name }}</h3>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <!-- Bugungi status -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Bugungi status" %}</h4>
+                        {% if child_data.today %}
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                            {% if child_data.today.status == 'present' %}bg-green-100 text-green-800
+                            {% elif child_data.today.status == 'late' %}bg-yellow-100 text-yellow-800
+                            {% else %}bg-red-100 text-red-800{% endif %}">
+                            {{ child_data.today.get_status_display }}
+                        </span>
+                        {% else %}
+                        <span class="text-gray-500">{% trans "Ma'lumot yo'q" %}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Oylik statistika -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Oylik davomat" %}</h4>
+                        {% with monthly=child_data.monthly_stats %}
+                        <div class="text-2xl font-semibold text-gray-900">
+                            {{ monthly|where:"status,present"|length }} / {{ monthly|length }}
+                        </div>
+                        {% endwith %}
+                    </div>
+
+                    <!-- Ketma-ket qoldirish -->
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-gray-600 mb-2">{% trans "Ketma-ket qoldirish" %}</h4>
+                        <div class="text-2xl font-semibold {% if child_data.consecutive_absences > 2 %}text-red-600{% else %}text-gray-900{% endif %}">
+                            {{ child_data.consecutive_absences }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <a href="{% url 'app:student_attendance' child_id %}" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        {% trans "Batafsil ko'rish" %} →
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    hech kim
+    {% endif %}
+</div>
+{% endblock %}

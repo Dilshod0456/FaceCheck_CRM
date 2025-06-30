@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Profile" %} | {{ user.get_full_name }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+        <div class="md:flex">
+            <div class="md:flex-shrink-0 p-6 bg-gray-50">
+                {% if user.profile_image %}
+                    <img class="h-48 w-48 rounded-full object-cover mx-auto" src="{{ user.profile_image.url }}" alt="{{ user.get_full_name }}">
+                {% else %}
+                    <div class="h-48 w-48 rounded-full bg-gray-300 flex items-center justify-center mx-auto">
+                        <span class="text-4xl text-gray-600">{{ user.get_full_name|make_list|first|upper }}</span>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="p-8">
+                <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">{% trans "User Profile" %}</div>
+                <h1 class="mt-2 text-3xl leading-8 font-bold tracking-tight text-gray-900">{{ user.get_full_name }}</h1>
+                <div class="mt-4 grid grid-cols-1 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Email" %}</label>
+                        <div class="mt-1 text-gray-900">{{ user.email }}</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Username" %}</label>
+                        <div class="mt-1 text-gray-900">{{ user.username }}</div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Role" %}</label>
+                        <div class="mt-1 text-gray-900">{{ user.get_user_type_display }}</div>
+                    </div>
+                    {% if user.date_joined %}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">{% trans "Member Since" %}</label>
+                        <div class="mt-1 text-gray-900">{{ user.date_joined|date:"F j, Y" }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg p-6 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">{% trans "Yangi bo'lim qo'shish" %}</h2>
+
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        
+        <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">{% trans "Bo'lim nomi" %}</label>
+            <input type="text" name="name" id="name" required
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="{% trans 'Bo\'lim nomini kiriting' %}">
+        </div>
+
+        <div>
+            <label for="description" class="block text-sm font-medium text-gray-700">{% trans "Tavsif" %}</label>
+            <textarea name="description" id="description" rows="4"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                placeholder="{% trans 'Bo\'lim haqida qo\'shimcha ma\'lumot' %}"></textarea>
+        </div>
+
+        <div class="flex justify-end space-x-3">
+            <a href="{% url 'app:department_list' %}" 
+                class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                {% trans "Bekor qilish" %}
+            </a>
+            <button type="submit"
+                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                {% trans "Saqlash" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

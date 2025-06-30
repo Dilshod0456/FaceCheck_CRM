@@ -1,0 +1,182 @@
+
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Davomat olish" %} - FaceCheck CRM{% endblock %}
+
+{% block extra_head %}
+<style>
+    .camera-container {
+        position: relative;
+        width: 640px;
+        height: 480px;
+        margin: 0 auto;
+    }
+    #video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    #canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    .detection-box {
+        position: absolute;
+        border: 2px solid #00ff00;
+        background-color: rgba(0, 255, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4">
+    <div class="mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">{% trans "Davomat olish" %}</h1>
+        <p class="mt-2 text-gray-600">{% trans "Guruhni tanlang va yuz tanish orqali davomat oling" %}</p>
+    </div>    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow p-6">
+            <form class="space-y-4">
+                <div>
+                    <label for="department" class="block text-sm font-medium text-gray-700">{% trans "Bo'lim" %}</label>
+                    <select name="department" id="department" 
+                            hx-get="{% url 'app:filter_groups' %}"
+                            hx-target="#group-select"
+                            hx-trigger="change"
+                            hx-indicator="#group-loading"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <option value="">{% trans "Bo'limni tanlang" %}</option>
+                        {% for dept in departments %}
+                        <option value="{{ dept.id }}">{{ dept.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div id="group-loading" class="htmx-indicator">
+                        <div class="text-center py-2">
+                            <svg class="animate-spin h-5 w-5 text-blue-500 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <label for="group-select" class="block text-sm font-medium text-gray-700">{% trans "Guruh" %}</label>
+                    <select name="group" id="group-select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" disabled>
+                        <option value="">{% trans "Guruhni tanlang" %}</option>
+                    </select>
+                </div>
+                <button type="button" id="startCapture" class="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50" disabled>
+                    {% trans "Davomatni boshlash" %}
+                </button>
+            </form>
+        </div>
+
+        <div class="md:col-span-2">
+            <div class="bg-white rounded-lg shadow p-6">
+                <div class="camera-container">
+                    <video id="video" playsinline autoplay></video>
+                    <canvas id="canvas"></canvas>
+                </div>
+
+                <div id="attendance-status" class="mt-4">
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">{% trans "Joriy holat" %}</p>
+                            <p id="status-text" class="text-sm text-gray-500">{% trans "Boshlash kutilmoqda..." %}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-sm font-medium text-gray-900">{% trans "Aniqlangan o'quvchilar" %}</p>
+                            <p id="detected-count" class="text-sm text-gray-500">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    let model = null;
+    let stream = null;
+    
+    async function loadFaceDetectionModel() {
+        model = await faceLandmarksDetection.load(
+            faceLandmarksDetection.SupportedPackages.mediapipeFaceMesh
+        );
+    }
+
+    async function setupCamera() {
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { width: 640, height: 480 },
+            audio: false
+        });
+        video.srcObject = stream;
+        
+        return new Promise(resolve => {
+            video.onloadedmetadata = () => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                resolve();
+            };
+        });
+    }
+
+    async function detectFaces() {
+        if (!model || !video.videoWidth) return;
+
+        const faces = await model.estimateFaces({
+            input: video,
+            returnTensors: false,
+            flipHorizontal: false,
+            predictIrises: false
+        });
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        faces.forEach(face => {
+            const box = face.boundingBox;
+            ctx.strokeStyle = '#00ff00';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(box.xMin, box.yMin, box.xMax - box.xMin, box.yMax - box.yMin);
+        });
+
+        document.getElementById('detected-count').textContent = faces.length;
+        requestAnimationFrame(detectFaces);
+    }
+
+    document.getElementById('startCapture').addEventListener('click', async () => {
+        const groupId = document.getElementById('group-select').value;
+        if (!groupId) return;
+
+        try {            document.getElementById('status-text').textContent = '{% trans "Kamera ishga tushirilmoqda..." %}';
+            await setupCamera();
+            document.getElementById('status-text').textContent = '{% trans "Yuz tanish modeli yuklanmoqda..." %}';
+            await loadFaceDetectionModel();
+            document.getElementById('status-text').textContent = '{% trans "Davomat olinmoqda..." %}';
+            detectFaces();
+        } catch (error) {
+            console.error('Error:', error);
+            document.getElementById('status-text').textContent = 'Error: ' + error.message;
+        }
+    });    // Enable group select when department is selected
+    document.getElementById('department').addEventListener('change', function() {
+        const groupSelect = document.getElementById('group-select');
+        groupSelect.disabled = !this.value;
+        if (!this.value) {
+            groupSelect.innerHTML = '<option value="">{% trans "Guruhni tanlang" %}</option>';
+        }
+    });
+
+    // Handle group selection
+    document.getElementById('group-select').addEventListener('change', function() {
+        const startButton = document.getElementById('startCapture');
+        startButton.disabled = !this.value;
+    });
+</script>
+{% endblock %}

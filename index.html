@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-icons {
+            font-size: 20px;
+        }:root {
+            --bg-primary: #f3f4f6;--bg-secondary: #ffffff;--text-primary: #1f2937;--text-secondary: #6b7280;--accent-primary: #3b82f6;--accent-secondary: #eff6ff;--border-primary: #e5e7eb;--shadow-primary: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);}.dark {
+            --bg-primary: #1f2937;--bg-secondary: #374151;--text-primary: #f3f4f6;--text-secondary: #9ca3af;--accent-primary: #60a5fa;--accent-secondary: #1e40af;--border-primary: #4b5563;--shadow-primary: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .bg-theme-secondary { background-color: var(--bg-secondary); }
+        .text-theme-primary { color: var(--text-primary); }
+        .text-theme-secondary { color: var(--text-secondary); }
+        .border-theme-primary { border-color: var(--border-primary); }
+        .shadow-theme-primary { box-shadow: var(--shadow-primary); }
+        .hover-bg-theme-accent-subtle:hover { background-color: var(--accent-secondary); }
+        .bg-theme-accent-subtle { background-color: var(--accent-secondary); }
+        .text-theme-accent { color: var(--accent-primary); }
+        .bg-theme-accent { background-color: var(--accent-primary); }
+        .hover-bg-theme-accent-stronger:hover { background-color: var(--accent-primary); filter: brightness(0.9); }
+    </style>
+</head>
+<body class="bg-theme-primary">
+<div class="flex h-screen">
+<aside class="w-64 bg-theme-secondary p-6 flex flex-col justify-between shadow-lg">
+<div>
+<div class="flex items-center mb-10">
+<div class="bg-theme-accent p-2 rounded-lg">
+<svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M13 10V3L4 14h7v7l9-11h-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<span class="ml-3 text-2xl font-bold text-theme-primary">Clarity</span>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center px-4 py-3 bg-theme-accent-subtle text-theme-accent rounded-lg font-semibold" href="#">
+<span class="material-icons mr-3">dashboard</span> Dashboard
+                    </a>
+<a class="flex items-center px-4 py-3 text-theme-secondary hover-bg-theme-accent-subtle rounded-lg" href="#">
+<span class="material-icons mr-3">work_outline</span> Projects
+                    </a>
+<a class="flex items-center px-4 py-3 text-theme-secondary hover-bg-theme-accent-subtle rounded-lg" href="#">
+<span class="material-icons mr-3">calendar_today</span> Calendar
+                    </a>
+<a class="flex items-center px-4 py-3 text-theme-secondary hover-bg-theme-accent-subtle rounded-lg" href="#">
+<span class="material-icons mr-3">flight_takeoff</span> Vacations
+                    </a>
+<a class="flex items-center px-4 py-3 text-theme-secondary hover-bg-theme-accent-subtle rounded-lg" href="#">
+<span class="material-icons mr-3">people_outline</span> Employees
+                    </a>
+<a class="flex items-center px-4 py-3 text-theme-secondary hover-bg-theme-accent-subtle rounded-lg" href="#">
+<span class="material-icons mr-3">chat_bubble_outline</span> Messenger
+                    </a>
+<a class="flex items-center px-4 py-3 text-theme-secondary hover-bg-theme-accent-subtle rounded-lg" href="#">
+<span class="material-icons mr-3">info_outline</span> Info Portal
+                    </a>
+</nav>
+</div>
+<div class="mt-auto">
+<div class="bg-theme-accent-subtle p-4 rounded-lg text-center">
+<img alt="Support illustration" class="mx-auto mb-4 w-24 h-24 object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf8S_o4j8uddKW361O40SNNoApo6fd2SBy0LRo-ugPyhnsg-SF7eNw89Vud0WjF1r0BER_EtFuVEKA6oCu6m6tBt3dYb358lW3gR8xpDUfrIVKWcB6lKD46xoXDNSv_I3c23Y7MvjsymikZD0gZ2LRxCFHc0v9V4s146YxHMVIlgqDNvCS0re_bon03wkvrrdC6Io-id5xNPtOYKJy6E2z0H17QFZgln046NwOLZqmhsqeU2cxRQ0x45SkNFwRjEAv6Ac5-omSuFc"/>
+<button class="w-full bg-theme-accent text-white py-2 px-4 rounded-lg font-semibold hover-bg-theme-accent-stronger transition-colors">
+<span class="material-icons align-middle mr-1" style="font-size:18px;">headset_mic</span> Support
+                    </button>
+</div>
+<a class="flex items-center px-4 py-3 mt-4 text-theme-secondary hover-bg-theme-accent-subtle rounded-lg" href="#">
+<span class="material-icons mr-3">logout</span> Logout
+                </a>
+</div>
+</aside>
+<main class="flex-1 p-8 overflow-y-auto">
+<header class="flex justify-between items-center mb-8">
+<div class="relative w-full max-w-md">
+<span class="material-icons absolute left-3 top-1/2 transform -translate-y-1/2 text-theme-secondary">search</span>
+<input class="pl-10 pr-4 py-2 w-full border border-theme-primary bg-theme-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-theme-primary placeholder-theme-secondary" placeholder="Search" type="text"/>
+</div>
+<div class="flex items-center space-x-6">
+<button class="text-theme-secondary hover:text-theme-primary" id="theme-toggle">
+<span class="material-icons">brightness_6</span>
+</button>
+<button class="text-theme-secondary hover:text-theme-primary relative">
+<span class="material-icons">notifications_none</span>
+<span class="absolute top-0 right-0 block h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-gray-800"></span>
+</button>
+<div class="flex items-center space-x-2 cursor-pointer group">
+<img alt="Evan Yates avatar" class="w-10 h-10 rounded-full border-2 border-transparent group-hover:border-theme-accent" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcD0W6_IftUxe80fEKYV4-7V5C5PpBWLfTc2tUqP7V-i3RwBfTz4Ac9bmyazX4Vk6oCDfKVO7y8ZWwZSyZH553jzcrvru-KkkVspJ9FMdR1Rnv2sjE5yCtfSbUngN3rrNZ6-fklM1ms8KNvyaF4Wnt24XgJnalXJrCA1kSpoxASD1lByKDWNjsWbrPHEy38c0jO8iznaU6F8X1d9C5HhoZPxH2gCPyI5z9wRMF1m0hgnXt-7oV5clCImnMMx_bfcXezxaY-5qkUdM"/>
+<span class="font-semibold text-theme-primary">Evan Yates</span>
+<span class="material-icons text-theme-secondary">expand_more</span>
+</div>
+</div>
+</header>
+<div class="mb-8">
+<p class="text-theme-secondary">Welcome back, Evan!</p>
+<div class="flex justify-between items-center mt-1">
+<h1 class="text-3xl font-bold text-theme-primary">Dashboard</h1>
+<div class="flex items-center bg-theme-secondary px-4 py-2 rounded-lg border border-theme-primary shadow-sm">
+<span class="material-icons text-theme-secondary mr-2">calendar_today</span>
+<span class="text-theme-primary">Nov 16, 2020 - Dec 16, 2020</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<section class="lg:col-span-2 bg-theme-secondary p-6 rounded-xl shadow-theme-primary">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl font-semibold text-theme-primary">Workload</h2>
+<a class="text-theme-accent hover:text-blue-600 font-medium flex items-center" href="#">
+                            View all <span class="material-icons ml-1">chevron_right</span>
+</a>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<div class="text-center p-4 bg-theme-primary rounded-lg">
+<img alt="Shawn Stone avatar" class="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-offset-2 ring-offset-theme-primary ring-blue-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAf-a1nUKmtLr5vrkd3xVF3j81sdflg1ObS4SLjrnGM-9Vucsl-pmIRj0YMGugG2rH9kxDqC8Niu-1IxzcyKuOfAhspGDZUK1pOIZevCMWlb4gZ2pWZn0YvYC0cbvnaKdl787h8MdKkCp0FLYsHMVnmgOKJ7haYFyqifsZ-BV6L_sI1rk6_Vdk_VlGT1L2jbxKO5ESmSu239WBd7PbWEYrvt-uvg-I__nC-U2ym9mOOf6Ntjgdo39GM9utHBHeE_Uw0dLZWuBIEv5w"/>
+<p class="font-semibold text-theme-primary mt-2">Shawn Stone</p>
+<p class="text-sm text-theme-secondary">UI/UX Designer</p>
+<span class="inline-block mt-1 px-2 py-0.5 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full">Middle</span>
+</div>
+<div class="text-center p-4 bg-theme-primary rounded-lg">
+<img alt="Randy Delgado avatar" class="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-offset-2 ring-offset-theme-primary ring-green-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-74AweljEu3Eo2-LtQm4Q1ZZwMok4HnXNyChk7iGTnYQeExiEpUG9WBUkYvGY9xM0tYFBD39YAinx8-soJOo_4BvNaUvJmIHiGFwyG5efqrNNvqM6BL31cH5JRASnNSWEkgTvxyYn6wA5GCLUYrjTs6teE9WYwxGePytKhs_lvhISpSehVR0TaTJYUVjT83e_VRlBA7--WHE1CztjutXz5Cp3cn2lE3wJ8aJuopcc25pKmqmTPTx9NkM49gVL5mwYiVTwDsjDqEM"/>
+<p class="font-semibold text-theme-primary mt-2">Randy Delgado</p>
+<p class="text-sm text-theme-secondary">UI/UX Designer</p>
+<span class="inline-block mt-1 px-2 py-0.5 text-xs font-semibold text-green-700 bg-green-100 rounded-full">Junior</span>
+</div>
+<div class="text-center p-4 bg-theme-primary rounded-lg">
+<img alt="Emily Tyler avatar" class="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-offset-2 ring-offset-theme-primary ring-blue-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDH93-8ZdIGDQcWAzczxubWdwkk4PR-ESPHvIPxg9va6B-YSJX96dAsp5mmW9IU3S5O73188WfoDR4ANIGOpfClBQ8PaTOHJ06OJp07BpysH5YeYanlOcvR3LPvMfpY8_QU4YP_BT3igWthSHU98yyjpoWmDM0dNc4lnp0K0mtEe3kou06u3LZP6JN4P7VxfGbmEpSovPA_LsBTwY9_5pv-UiwU5QhwhzdPvgL2ax6LqKAbiBIs3QMYQeqMwmZ59n2gCBbawIOqVRI"/>
+<p class="font-semibold text-theme-primary mt-2">Emily Tyler</p>
+<p class="text-sm text-theme-secondary">Copywriter</p>
+<span class="inline-block mt-1 px-2 py-0.5 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full">Middle</span>
+</div>
+<div class="text-center p-4 bg-theme-primary rounded-lg">
+<img alt="Louis Castro avatar" class="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-offset-2 ring-offset-theme-primary ring-purple-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYD1rEFg0xB6VYacHR176WH8O2Aq3amKQ9wNm26Ue9HhkKW-UzZQ8DHGdHYX1J4pRpwG71rRyhYoogvKpbGJQrDuCccoRUE2V7BHAbqOUEdzgko78CkRDrxtSgmrL5CqS07RUORPmxWtkgds91cU1P0KdbsLAq4yuV8hbK6nySYhwk_P2qtLc15vOynnbvfpfBlHV4oveFU2nicb7s6xuMibIdu8DbYw_9Gt9xB3y3rUPJ1adAZgS-XCstlpH9-NjKblHZyX-F6Ig"/>
+<p class="font-semibold text-theme-primary mt-2">Louis Castro</p>
+<p class="text-sm text-theme-secondary">Copywriter</p>
+<span class="inline-block mt-1 px-2 py-0.5 text-xs font-semibold text-purple-700 bg-purple-100 rounded-full">Senior</span>
+</div>
+<div class="text-center p-4 bg-theme-primary rounded-lg">
+<img alt="Blake Silva avatar" class="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-offset-2 ring-offset-theme-primary ring-purple-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRcCsr_y80WHsNCym6kanGiIF7j6-OjZVhPv1L79aFxGb_EaMjUCh-UI7MpiUXwRDH1II1ZiD031KZ5BaCgDuA0QK83v01GOyCO4QglVo_Px2Ub78DANhozTkiUsX-v_81ntPLX3ANamTJIe06ONA-8u8D35Tl0PILfHxYIHERljEf5CJQZ9EjpQq9i4HDTEA0IQVp5cn0ySQs9k1gH43yQBsKrlA4kCyokNUxZ9ktbSO_iQaVjNBTELtKqUXNVzaZUaiTEkaLNf8"/>
+<p class="font-semibold text-theme-primary mt-2">Blake Silva</p>
+<p class="text-sm text-theme-secondary">iOS Developer</p>
+<span class="inline-block mt-1 px-2 py-0.5 text-xs font-semibold text-purple-700 bg-purple-100 rounded-full">Senior</span>
+</div>
+<div class="text-center p-4 bg-theme-primary rounded-lg">
+<img alt="Joel Phillips avatar" class="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-offset-2 ring-offset-theme-primary ring-blue-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_lqeBD7TpWuBEVZZUfqTM-3hP9mIlskc-5x01rPvKaPWaNWuQQ_WYgBLfxpxIPdNP55ZmrxdZXdJzi5FbZhbJl2NS7fdblRDI9CWINcqZFGp5Kkg_lJ_p0n3_OzdnIfSNXvPBoXYaHoki-1CKWuePL8DuCGOfWGfnIHeACYv5dYrxw5I27rhy8pC6MUSqEQwE76tO-t3yhZjrlrhRf8H8BtURyNfVE7--Umdrcwm6Xx-uYSFgqb94OBOZXaskatepdPnbYXR3eGA"/>
+<p class="font-semibold text-theme-primary mt-2">Joel Phillips</p>
+<p class="text-sm text-theme-secondary">UI/UX Designer</p>
+<span class="inline-block mt-1 px-2 py-0.5 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full">Middle</span>
+</div>
+<div class="text-center p-4 bg-theme-primary rounded-lg">
+<img alt="Wayne Marsh avatar" class="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-offset-2 ring-offset-theme-primary ring-green-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAXTsq6TjLei1r4j8LrmCNSu4yQa0RjcBNUyjwJvkZxuWdoT6XQVKhsPv6LExApqd0B5qn7k-o19l00MIU9Wf_7cPkqEZ-xebFK_jr5Z6vGNVVi_omknmaX7X4T2RrBa93sHsLAIh6qGu1QGNLmUOXCl3T-3OylBbacmmHUfhKUiSGAkw8R6LabA7U1tSOBNfMFCVKnnQkoZ56wPMuP_o6l1oHf5tNBc7XyKDqQjMFdQDaONx0hmYHyU9FJhSdezO70APbDdOR3J4"/>
+<p class="font-semibold text-theme-primary mt-2">Wayne Marsh</p>
+<p class="text-sm text-theme-secondary">Copywriter</p>
+<span class="inline-block mt-1 px-2 py-0.5 text-xs font-semibold text-green-700 bg-green-100 rounded-full">Junior</span>
+</div>
+<div class="text-center p-4 bg-theme-primary rounded-lg">
+<img alt="Oscar Holloway avatar" class="w-16 h-16 rounded-full mx-auto mb-2 ring-2 ring-offset-2 ring-offset-theme-primary ring-blue-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCO4SFIT6GuG0XpRHDRDTH4_X1ZpUQJbCX6u0_cbZ4KCRT4-N-iXkaNyxga7gHO-zgcsZpFN2dTcMz6vGs2b_rZ6-66Bj-_jBNFeSQMJyvmasjd_0Qmo_g1NybVobDbC1Rp2V8bQHxjaKwgu1g--cZROHIk2VLCCwxeAkg9PmR3kGjrx3TMvu44LEYv5g7P4n9MmyEA8w9ybLN7IJYRD9mQP3xemKQxXuAp_6AObS13axZwKTXXlC4uDslhR4hnDqpN5D-xdfvSyKE"/>
+<p class="font-semibold text-theme-primary mt-2">Oscar Holloway</p>
+<p class="text-sm text-theme-secondary">UI/UX Designer</p>
+<span class="inline-block mt-1 px-2 py-0.5 text-xs font-semibold text-blue-700 bg-blue-100 rounded-full">Middle</span>
+</div>
+</div>
+</section>
+<section class="bg-theme-secondary p-6 rounded-xl shadow-theme-primary">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl font-semibold text-theme-primary">Nearest Events</h2>
+<a class="text-theme-accent hover:text-blue-600 font-medium flex items-center" href="#">
+                            View all <span class="material-icons ml-1">chevron_right</span>
+</a>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-theme-primary rounded-lg">
+<div>
+<p class="font-semibold text-theme-primary">Presentation of the new department</p>
+<p class="text-sm text-theme-secondary">Today | 5:00 PM</p>
+</div>
+<div class="flex items-center space-x-1">
+<span class="material-icons text-red-500">arrow_upward</span>
+<span class="text-sm text-theme-secondary">4h</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-theme-primary rounded-lg">
+<div>
+<p class="font-semibold text-theme-primary">Anna's Birthday</p>
+<p class="text-sm text-theme-secondary">Today | 6:00 PM</p>
+</div>
+<div class="flex items-center space-x-1">
+<span class="material-icons text-green-500">arrow_downward</span>
+<span class="text-sm text-theme-secondary">4h</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-theme-primary rounded-lg">
+<div>
+<p class="font-semibold text-theme-primary">Ray's Birthday</p>
+<p class="text-sm text-theme-secondary">Tomorrow | 2:00 PM</p>
+</div>
+<div class="flex items-center space-x-1">
+<span class="material-icons text-green-500">arrow_downward</span>
+<span class="text-sm text-theme-secondary">4h</span>
+</div>
+</div>
+</div>
+</section>
+<section class="lg:col-span-2 bg-theme-secondary p-6 rounded-xl shadow-theme-primary">
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl font-semibold text-theme-primary">Projects</h2>
+<a class="text-theme-accent hover:text-blue-600 font-medium flex items-center" href="#">
+                            View all <span class="material-icons ml-1">chevron_right</span>
+</a>
+</div>
+<div class="space-y-4">
+<div class="p-4 border border-theme-primary rounded-lg">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<div class="p-3 bg-purple-100 dark:bg-purple-800/30 rounded-lg mr-4">
+<span class="material-icons text-purple-500 dark:text-purple-400">phone_iphone</span>
+</div>
+<div>
+<p class="text-sm text-theme-secondary">PN0001265</p>
+<p class="font-semibold text-theme-primary">Medical App (iOS native)</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm text-theme-secondary">Project Data</p>
+<p class="font-semibold text-theme-primary">Sep 12, 2020</p>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-theme-primary flex items-center justify-between text-sm">
+<div class="flex items-center text-orange-500">
+<span class="material-icons mr-1" style="font-size:16px;">arrow_upward</span> Medium
+                                </div>
+<div class="flex items-center space-x-4">
+<div>
+<p class="text-theme-secondary">All tasks</p>
+<p class="font-semibold text-theme-primary">34</p>
+</div>
+<div>
+<p class="text-theme-secondary">Active tasks</p>
+<p class="font-semibold text-theme-primary">13</p>
+</div>
+</div>
+<div>
+<p class="text-theme-secondary mb-1">Assignees</p>
+<div class="flex -space-x-2">
+<img alt="Assignee 1" class="inline-block h-8 w-8 rounded-full ring-2 ring-theme-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOcdK1rFn5sTP2FPIRVMO_1ucCWYNpAcpIo7OD_UJCDzevvQeAH3oWJ8fFPV1O_PyeuvaVXgorFvB_bQo8F-pOq61foAAK9iO6eTI9NRahLi0lNVz4HQevUE51PGk9H5jbXInyrjHCD8MmngZ1AMcASisdskh9SrAru94O4oy1M-mOKBsGK-AiSFVy0oMOLwvm8hIDitIQvQk3KO3ud9hU0CyYf1A7NzcqSd2OeDLnoOd3Y1QSHR6oo0dlKYuswPKj79An6NaIcEk"/>
+<img alt="Assignee 2" class="inline-block h-8 w-8 rounded-full ring-2 ring-theme-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaiRtWFXmBIlHxKwE2g5SlooaHDfCDXyWQbTWprMGMlfl8sHtrMFRmzgs6j3mVRuc14mqvKMWx0NemN3uuZLxof0Y6ItBJoltKfFEV7JzQmz4YP2ezq0QSv22ctxkZxguoALGDaxqpy6ypqOrvk1gmuS6EvAEKMCYCByoz16yXsjfgcAOPoEHCSDbKjHOgI9n-O7b6gjg3bjWJh5-c3fpqJmzjRgk17gMZd6zNtz2hd4NhgqxFSoCTYWiLCeDpn0eQOnLJeJQvH7M"/>
+<img alt="Assignee 3" class="inline-block h-8 w-8 rounded-full ring-2 ring-theme-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDakZ2u2hSV1whYZ2p0SiwjptSeyPm32-evJMEkRE2g2EGKcFNxFDlKPv5V5iIJrXVjs2rXynXhtg4yv4nNeSp-20HlBUFahksZMzBlG2h6Bo89MNJUzXP3_7EefKQeA53t56XqOvWW81Kck7lL0-xXhuqRyrUZZOyNtMgpqlwSjc3QFSMHSoQkKDOcMzaufhbk9pTCUK5XweKK__gxRKieHv-InHNCiA3cRwYaqUy2OEEDSDbltkxjEZWdcGR09v_1KMJpjQ9cLKw"/>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border border-theme-primary rounded-lg">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<div class="p-3 bg-yellow-100 dark:bg-yellow-800/30 rounded-lg mr-4">
+<span class="material-icons text-yellow-500 dark:text-yellow-400">restaurant</span>
+</div>
+<div>
+<p class="text-sm text-theme-secondary">PN0001221</p>
+<p class="font-semibold text-theme-primary">Food Delivery Service</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm text-theme-secondary">Project Data</p>
+<p class="font-semibold text-theme-primary">Sep 10, 2020</p>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-theme-primary flex items-center justify-between text-sm">
+<div class="flex items-center text-orange-500">
+<span class="material-icons mr-1" style="font-size:16px;">arrow_upward</span> Medium
+                                </div>
+<div class="flex items-center space-x-4">
+<div>
+<p class="text-theme-secondary">All tasks</p>
+<p class="font-semibold text-theme-primary">50</p>
+</div>
+<div>
+<p class="text-theme-secondary">Active tasks</p>
+<p class="font-semibold text-theme-primary">24</p>
+</div>
+</div>
+<div>
+<p class="text-theme-secondary mb-1">Assignees</p>
+<div class="flex -space-x-2">
+<img alt="Assignee 4" class="inline-block h-8 w-8 rounded-full ring-2 ring-theme-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0nY_H89yYbfveOsgGR6oD6dPw8ksNIW79Kilul4MTO2Et0URvZkfqH2TfhSTR4VUhqA-LqxYblXJTMvKyAHkq9mhadpl99mxIkNFkChOWd4w5Ljksk1ByJrbHkjWfK51QmHBejyJWcvyf_q81_o_u7BUko-QqdDOFwvX-rr9jkZr-ESGOltyanW8B-6ZSobkf5GzBBfUSPYHfS-y_VJdV6JcdqtvBGvO4vq_OLH6xNyteHjS4jwC7UMw15Zzo-JZO12APbAmaYlo"/>
+<img alt="Assignee 5" class="inline-block h-8 w-8 rounded-full ring-2 ring-theme-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4UyyywjVzu-A4kMylo8YXdbQVmn10DrH9g49kw5OSsCyvB8E-cCL17c8NvAUBYtQx6I9m1EJYNUJMoFGl3lsYzei5-jEbsZhUv_c6kDXddeV4Nn1xWnE_061xQoE4WkmNfeDh_sXOCM6EEB_BhKdOi4Le0TgYocf70PdtENp7boW3gLjLcUOMrJa_BMc9Me1SggTRGtEnok3aKGJjIoUlpXY33iGfOGWuK0sXfeq14RHFF2a2qyr5ouVsYHtB652d5KMA-rG3NFk"/>
+<img alt="Emily Tyler avatar" class="inline-block h-8 w-8 rounded-full ring-2 ring-theme-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx1HrozSZscjclku2ontUSAC1QPVW_TNrZSxRE9wJ15YeTX9Eb6tdU8vtmXokf3kNgN8e_6BWjIVrog1iO_8Z-5jbuN_QAiu63xyFft9ScYqwQG3CPYZ2FjFL_lVPij42krR1-Rq44JbFYIhIWSkcGwlrQilsbM_js_uMRItsdYevtmc97Du1hebBnI6VvqZk3YMuBBMQdmFAayAUeHuPgaL2Q4CIeSS3un_8LToLf1leHCytNncCciDMAeTpSwbHn8Qp4fAzFB0Q"/>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border border-theme-primary rounded-lg">
+<div class="flex items-center justify-between">
+<div class="flex items-center">
+<div class="p-3 bg-pink-100 dark:bg-pink-800/30 rounded-lg mr-4">
+<span class="material-icons text-pink-500 dark:text-pink-400">restaurant_menu</span>
+</div>
+<div>
+<p class="text-sm text-theme-secondary">PN0001290</p>
+<p class="font-semibold text-theme-primary">Food Delivery Service</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-sm text-theme-secondary">Project Data</p>
+<p class="font-semibold text-theme-primary">May 28, 2020</p>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-theme-primary flex items-center justify-between text-sm">
+<div class="flex items-center text-green-500">
+<span class="material-icons mr-1" style="font-size:16px;">arrow_downward</span> Low
+                                </div>
+<div class="flex items-center space-x-4">
+<div>
+<p class="text-theme-secondary">All tasks</p>
+<p class="font-semibold text-theme-primary">23</p>
+</div>
+<div>
+<p class="text-theme-secondary">Active tasks</p>
+<p class="font-semibold text-theme-primary">20</p>
+</div>
+</div>
+<div>
+<p class="text-theme-secondary mb-1">Assignees</p>
+<div class="flex -space-x-2">
+<img alt="Blake Silva avatar" class="inline-block h-8 w-8 rounded-full ring-2 ring-theme-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIl3xP8Cq9cgnW8gtWN1MzoY4CjIcp6W-sOWCi-D5-XPRtt-CEJdY0t0l_NhytSF0bIifbal924oCX3Cku57OVFdjt_gBSRuBqAZgqpCgKV0Axw8xSAMPHyvW3WTudRutblh6c9a2F6A70PGM7rP0ykTlmxCotF2vUjSRZBd62m9ek4DIzKl2quS-Xr2ottfM9Yfm83OULecCm-r02dhSyVx_xB5M3Y4vgeTomrz644avF7lbHs5CD9QArMkyhLwmYssZbMJD3Ur0"/>
+<img alt="Joel Phillips avatar" class="inline-block h-8 w-8 rounded-full ring-2 ring-theme-secondary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-K0PJdvN9PC_KdGFhgUMIHbBWfjHL4_cEd5G49_YdzzVfHbTEL7tU2jzHvY3qVzWruf3HMLJ2bYEffeTw3nL7jn9IkHrI4I7gi_Nfz-8DYGF2LuOdEU0HZw96dZx3AEO93LAf6SGHSQbwFNmxrA2EX-jvOAV_pnvzca9mAhomB4qXT3U221katVsJkdQ-RkDkgehzTnmfxCo5dx43qqasOaJ2xTJpoizRUo5LJpMeSQZ9MHy0av2nCryY1dAH5l8DQ16dCj_Xv2o"/>
+<span class="flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-theme-secondary bg-gray-200 dark:bg-gray-600 text-xs font-semibold text-gray-600 dark:text-gray-300">+2</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-theme-secondary p-6 rounded-xl shadow-theme-primary">
+<h2 class="text-xl font-semibold text-theme-primary mb-6">Activity Stream</h2>
+<div class="space-y-6">
+<div class="flex">
+<img alt="Oscar Holloway avatar" class="w-10 h-10 rounded-full mr-3 flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTKQIzKBWxmnWH9Tsn-5fNkaHBv5WBi9b44ESTgyADsIYz5M5UnCXyVz0CklTvUts5TYYqwcab5MMhxZJYCHlGxauRN0ztoeClYRl1_-HkJyB1cJC7iWZ7mu2iRIylV9ZZH1FkCb3fX9UlRKpb2g0BEOeJpfLNXgkbHWcTCpsDMojW0lq8u1HiuQRnmzI70MSPMs5_HMqhTp-Dg3R1LS1b_WheVfs5Y12bqCsTFfA12qR3g8WWuISA8Z7QVO3sNe09gyTuyN5E5aA"/>
+<div>
+<p class="text-sm text-theme-primary">
+<span class="font-semibold">Oscar Holloway</span> <span class="text-theme-secondary">UI/UX Designer</span>
+</p>
+<p class="text-sm text-theme-secondary">
+                                    Updated the status of <span class="text-theme-accent">Mind Map task</span> to <span class="font-semibold text-blue-600 dark:text-blue-400">In Progress</span>
+</p>
+</div>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-theme-accent-subtle flex items-center justify-center mr-3 flex-shrink-0">
+<span class="material-icons text-theme-accent">attach_file</span>
+</div>
+<p class="text-sm text-theme-primary">Attached files to the task <span class="text-theme-accent font-medium">Design System Update</span></p>
+</div>
+<div class="flex">
+<img alt="Emily Tyler avatar" class="w-10 h-10 rounded-full mr-3 flex-shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCe3u2bqmwa3ccuXbDccchyZA1csLk4u4V9AyWgduE9MgrKlUfn-TA1_kn0kDU5PCJ-w7wCp8_KNRsBnfpiUZbKVEghLGFBR6ZKaOq2mwxYErJ_pk-oDJ_-tkyKUU7QrHqG-p88S_SS1rupjhGl3ed6pE0EA8FOOh7RfvMleO_IfTiCgnb7T5tNz1uBThaIqGi7krdFekyrdmgTwYF8IgQd98zinSj1jDb6-bMi5z42nFo4bsY3fQ3pPAyaQdCFAa8P6NpHz_4KIj8"/>
+<div>
+<p class="text-sm text-theme-primary">
+<span class="font-semibold">Emily Tyler</span> <span class="text-theme-secondary">Copywriter</span>
+</p>
+<p class="text-sm text-theme-secondary">
+                                    Commented on <span class="text-theme-accent">Homepage Redesign</span>: "Looks great, just a few minor tweaks needed."
+                                </p>
+</div>
+</div>
+</div>
+<a class="mt-6 text-theme-accent hover:text-blue-600 font-medium flex items-center justify-center" href="#">
+                        View more <span class="material-icons ml-1">expand_more</span>
+</a>
+</section>
+</div>
+</main>
+</div>
+<script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme) {
+            document.documentElement.classList.add(currentTheme);
+            if (currentTheme === 'dark') {
+                 document.body.classList.add('dark');
+            }
+        } else {
+            // Default to light theme if no preference or system preference is light
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                 document.body.classList.add('dark');
+                 localStorage.setItem('theme', 'dark');
+            } else {
+                 localStorage.setItem('theme', 'light');
+            }
+        }
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            let theme = 'light';
+            if (document.body.classList.contains('dark')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+        });
+    </script>
+
+</body></html>

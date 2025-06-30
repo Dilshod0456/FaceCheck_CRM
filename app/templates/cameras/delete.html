@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Kamerani o'chirish" %} - FaceCheck CRM{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="max-w-lg mx-auto">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <h2 class="text-2xl font-bold mb-6">{% trans "Kamerani o'chirish" %}</h2>
+            
+            <p class="mb-6 text-gray-700">
+                {% trans "Haqiqatan ham" %} <strong>{{ camera.name }}</strong> {% trans "kamerasini o'chirmoqchimisiz?" %}
+            </p>
+            
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        {% trans "O'chirish" %}
+                    </button>
+                    <a href="{% url 'app:camera_list' %}" class="text-blue-500 hover:text-blue-700">
+                        {% trans "Bekor qilish" %}
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

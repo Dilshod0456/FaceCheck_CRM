@@ -1,0 +1,81 @@
+{% load static %}
+{% load i18n %}
+
+<div class="container w-full mx-auto p-6">
+    <div class="flex justify-between items-center mb-7.5">
+        <div class="search-bar flex items-center bg-white rounded-2xl p-3 w-[16.375rem] shadow-[0px_6px_58px_#c3cbd61a]">
+            <img src="{% static 'assets/images/img_icn_general_search.svg' %}" alt="{% trans 'Search Icon' %}" width="24" height="24" class="mr-2.75" />
+            <input type="text" placeholder="{% trans 'Search' %}" class="border-none outline-none text-base text-gray-600 w-full bg-transparent" />
+        </div>
+
+        <div class="user-actions flex items-center">
+            <div class="notifications bg-white rounded-2xl w-14 h-14 flex justify-center items-center mr-5 shadow-[0px_6px_58px_#c3cbd61a] cursor-pointer">
+                <img src="{% static 'assets/images/img_icn_general_notifications.svg' %}" alt="{% trans 'Notifications' %}" width="24" height="24" />
+            </div>
+            <div class="relative flex items-center">
+                <!-- Language Selector -->
+                <form action="{% url 'set_language' %}" method="post" class="mr-5">
+                    {% csrf_token %}
+                    <select name="language" onchange="this.form.submit()" class="bg-white rounded-2xl h-14 w-[100px] text-sm text-gray-700 px-4 py-1 shadow-[0px_6px_58px_#c3cbd61a] focus:outline-none hover:bg-gray-50 cursor-pointer">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% if lang.0 == LANGUAGE_CODE %}selected{% endif %}>
+                                {{ lang.1 }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                </form>
+
+                <!-- User Profile Dropdown -->
+                <button type="button" onclick="toggleDropdown()" class="user-profile flex items-center bg-white h-14 rounded-2xl p-2 shadow-[0px_6px_58px_#c3cbd61a] hover:bg-gray-50">
+                    {% if request.user.profile_image %}
+                        <img src="{{ request.user.profile_image.url }}" alt="{% trans 'User Profile' %}" class="profile-pic w-[40px] rounded-[0.9375rem] mr-2.5" />
+                    {% else %}
+                        <span class="profile-pic w-[40px] h-[40px] rounded-[0.9375rem] mr-2.5 bg-gray-300 flex items-center justify-center text-xl text-gray-600">{{ request.user.get_full_name|make_list|first|upper }}</span>
+                    {% endif %}
+                    <span class="text-base font-bold text-gray-900 mr-2.5">{{ user.get_full_name }}</span>
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+
+                <div id="userDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50 top-full">
+                    <a href="{% url 'app:user_profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        {% trans "Profile" %}
+                    </a>
+                    {% if user.user_type == 'super_admin' %}
+                    <a href="{% url 'admin:index' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        {% trans "Admin Panel" %}
+                    </a>
+                    {% endif %}
+                    <div class="border-t border-gray-100"></div>
+                    <form action="{% url 'app:logout' %}" method="post" class="block">
+                        {% csrf_token %}
+                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {% trans "Chiqish" %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function toggleDropdown() {
+    const dropdown = document.getElementById('userDropdown');
+    dropdown.classList.toggle('hidden');
+}
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(event) {
+    const dropdown = document.getElementById('userDropdown');
+    const button = event.target.closest('.user-profile');
+    
+    if (!button && !dropdown.contains(event.target) && !dropdown.classList.contains('hidden')) {
+        dropdown.classList.add('hidden');
+    }
+});
+</script>

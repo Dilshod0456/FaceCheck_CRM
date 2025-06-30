@@ -1,0 +1,99 @@
+{% load i18n %}
+
+<style>
+    .message-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        min-width: 300px;
+        font-family: Arial, sans-serif;
+    }
+    .alert {
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        opacity: 0;
+        transform: translateX(100px); /* Boshlang'ich holat: o'ngda */
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .alert.show {
+        opacity: 1;
+        transform: translateX(0); /* Paydo bo'lganda joyiga keladi */
+    }
+    .alert.hide {
+        opacity: 0;
+        transform: translateX(100px); /* Yo'qolganda o'ngga siljiydi */
+    }
+    .alert-success {
+        background-color: #28a745;
+    }
+    .alert-error {
+        background-color: #dc3545;
+    }
+    .alert-warning {
+        background-color: #ffc107;
+    }
+    .alert-info {
+        background-color: #17a2b8;
+    }
+    .alert-close {
+        background: none;
+        border: none;
+        color: #fff;
+        font-size: 16px;
+        cursor: pointer;
+        padding: 0 10px;
+    }
+    .alert-close:hover {
+        color: #ddd;
+    }
+</style>
+
+<div class="message-container">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert 
+                {% if message.tags == 'success' %}alert-success
+                {% elif message.tags == 'error' %}alert-error
+                {% elif message.tags == 'warning' %}alert-warning
+                {% elif message.tags == 'info' %}alert-info
+                {% else %}alert-info{% endif %}" 
+                role="alert">
+                <span>{{ message }}</span>
+                <button type="button" class="alert-close" onclick="closeAlert(this)" aria-label="{% trans 'Close' %}">×</button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const alerts = document.querySelectorAll('.alert');
+        alerts.forEach(function (alert, index) {
+            // Har bir xabar 300ms oraliq bilan paydo bo'ladi
+            setTimeout(() => {
+                alert.classList.add('show');
+                // 5 sekunddan keyin avtomatik yashirish
+                setTimeout(function () {
+                    alert.classList.add('hide');
+                    setTimeout(function () {
+                        alert.remove();
+                    }, 500); // CSS transition bilan moslash
+                }, 10000);
+            }, index * 300); // Har bir xabar uchun kechikish
+        });
+    });
+
+    function closeAlert(button) {
+        const alert = button.parentElement;
+        alert.classList.add('hide');
+        setTimeout(() => {
+            alert.remove();
+        }, 500); // CSS transition bilan moslash
+    }
+</script>

@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="bg-white shadow-md rounded-lg p-6 max-w-2xl mx-auto">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">{% trans "O'qituvchi ma'lumotlarini tahrirlash" %}</h2>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        <div class="grid grid-cols-1 gap-6">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label for="first_name" class="block text-sm font-medium text-gray-700">{% trans "Ism" %}</label>
+                    <input type="text" name="first_name" id="first_name" required
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        value="{{ teacher.first_name }}"
+                        placeholder="{% trans 'Ismni kiriting' %}">
+                </div>
+
+                <div>
+                    <label for="last_name" class="block text-sm font-medium text-gray-700">{% trans "Familiya" %}</label>
+                    <input type="text" name="last_name" id="last_name" required
+                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                        value="{{ teacher.last_name }}"
+                        placeholder="{% trans 'Familiyani kiriting' %}">
+                </div>
+            </div>
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">{% trans "Email" %}</label>
+                <input type="email" name="email" id="email" required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    value="{{ teacher.email }}"
+                    placeholder="{% trans 'Email manzilini kiriting' %}">
+            </div>
+
+            <div>
+                <label for="phone_number" class="block text-sm font-medium text-gray-700">{% trans "Telefon" %}</label>
+                <input type="tel" name="phone_number" id="phone_number" required
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    value="{{ teacher.phone_number }}"
+                    placeholder="{% trans 'Telefon raqamini kiriting' %}">
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">{% trans "Yangi parol" %}</label>
+                <input type="password" name="password" id="password"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    placeholder="{% trans 'Yangi parol kiriting (ixtiyoriy)' %}">
+                <p class="mt-1 text-sm text-gray-500">{% trans "Parolni o'zgartirish uchun to'ldiring" %}</p>
+            </div>
+
+            <div>
+                <label for="profile_image" class="block text-sm font-medium text-gray-700">Profil rasmi</label>
+                {% if teacher.profile_image %}
+                    <img src="{{ teacher.profile_image.url }}" alt="Profil rasmi" class="h-24 w-24 rounded-full object-cover mb-2">
+                {% endif %}
+                <input type="file" name="profile_image" id="profile_image" accept="image/*"
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+            </div>
+        </div>
+
+        <div class="flex justify-end space-x-3">
+            <a href="{% url 'app:teacher_list' %}" 
+                class="inline-flex justify-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                {% trans "Bekor qilish" %}
+            </a>
+            <button type="submit"
+                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                {% trans "Saqlash" %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
