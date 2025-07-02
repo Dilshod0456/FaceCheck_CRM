@@ -61,7 +61,7 @@
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Guruhlar (ixtiyoriy)</label>
-                        <select name="groups" multiple class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <select name="groups" multiple class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" style="min-height: 80px;">
                             {% for group in groups %}
                             <option value="{{ group.id }}">{{ group.name }}</option>
                             {% endfor %}
@@ -70,7 +70,7 @@
                     
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Ota-onalar (ixtiyoriy)</label>
-                        <select name="parents" multiple class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        <select name="parents" multiple class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" style="min-height: 80px;">
                             {% for parent in parents %}
                             <option value="{{ parent.id }}">{{ parent.get_full_name }}</option>
                             {% endfor %}
@@ -79,21 +79,304 @@
 
                     <div>
                         <label class="block text-sm font-medium text-gray-700">Profil rasmi (majburiy)</label>
-                        <input type="file" name="profile_image" accept="image/*" required
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                        
+                        <!-- Rasm tanlash tugmalari -->
+                        <div class="mt-1 flex space-x-3">
+                            <button type="button" id="openFileBtn" 
+                                class="flex-1 px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                                Fayldan tanlash
+                            </button>
+                            
+                            <button type="button" id="openCamera"
+                                class="flex-1 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                Kameradan olish
+                            </button>
+                        </div>
+
+                        <!-- Yashirin fayl input -->
+                        <input type="file" id="profile_image" name="profile_image" accept="image/*" required class="hidden">
+                        
+                        <!-- Tanlangan rasm preview -->
+                        <div id="imagePreview" class="mt-3 hidden">
+                            <div class="relative inline-block">
+                                <img id="previewImg" src="" alt="Tanlangan rasm" 
+                                     class="h-32 w-32 object-cover rounded-lg border-2 border-gray-200 shadow-sm">
+                                <button type="button" id="removeImage" 
+                                        class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <p id="fileInfo" class="text-sm text-gray-600 mt-2"></p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
-                <a href="{% url 'app:student_list' %}" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                <a href="{% url 'app:student_list' %}" 
+                   class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors">
                     Bekor qilish
                 </a>
-                <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                <button type="submit" 
+                        class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                     Saqlash
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+<!-- Kamera Modal - Umumiy dizaynga moslashtirilgan -->
+<div id="cameraModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4">
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <h3 class="text-xl font-semibold text-gray-800">Kameradan rasm olish</h3>
+                <button id="closeCamera" class="text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-md p-1 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Modal Body -->
+        <div class="p-6">
+            <div class="relative">
+                <video id="video" class="w-full h-64 bg-gray-900 rounded-lg object-cover" autoplay playsinline></video>
+                <canvas id="canvas" class="hidden"></canvas>
+                
+                <!-- Loading indicator -->
+                <div id="cameraLoading" class="absolute inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center rounded-lg">
+                    <div class="text-center text-white">
+                        <svg class="animate-spin w-8 h-8 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <p class="text-sm">Kamera ishga tushmoqda...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
+            <button id="closeModalBtn" 
+                    class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors">
+                Bekor qilish
+            </button>
+            <button id="capture" 
+                    class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors">
+                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                Suratga olish
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const openCameraBtn = document.getElementById('openCamera');
+    const openFileBtn = document.getElementById('openFileBtn');
+    const cameraModal = document.getElementById('cameraModal');
+    const closeCameraBtn = document.getElementById('closeCamera');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const captureBtn = document.getElementById('capture');
+    const profileImageInput = document.getElementById('profile_image');
+    const imagePreview = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    const fileInfo = document.getElementById('fileInfo');
+    const removeImageBtn = document.getElementById('removeImage');
+    const cameraLoading = document.getElementById('cameraLoading');
+    
+    let stream;
+
+    // Fayldan tanlash
+    openFileBtn.addEventListener('click', () => {
+        profileImageInput.click();
+    });
+
+    // Fayl tanlanganda
+    profileImageInput.addEventListener('change', (e) => {
+        handleFileSelect(e.target.files[0]);
+    });
+
+    // Kamera modal ochish
+    openCameraBtn.addEventListener('click', async () => {
+        cameraModal.classList.remove('hidden');
+        cameraLoading.classList.remove('hidden');
+        
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'user',
+                    width: { ideal: 640 },
+                    height: { ideal: 480 }
+                } 
+            });
+            video.srcObject = stream;
+            
+            // Video yuklanganda loading yashirish
+            video.addEventListener('loadedmetadata', () => {
+                cameraLoading.classList.add('hidden');
+            });
+            
+        } catch (err) {
+            console.error('Kamera xatosi:', err);
+            alert("Kameraga kirishda xatolik yuz berdi. Iltimos, brauzer ruxsatlarini tekshiring.");
+            closeModal();
+        }
+    });
+
+    // Modal yopish funksiyasi
+    function closeModal() {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            stream = null;
+        }
+        cameraModal.classList.add('hidden');
+        cameraLoading.classList.remove('hidden');
+    }
+
+    // Modal yopish tugmalari
+    closeCameraBtn.addEventListener('click', closeModal);
+    closeModalBtn.addEventListener('click', closeModal);
+
+    // Rasm olish
+    captureBtn.addEventListener('click', () => {
+        if (!stream) return;
+        
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        
+        canvas.toBlob(blob => {
+            const file = new File([blob], 'kamera-rasm.jpg', { type: 'image/jpeg' });
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            profileImageInput.files = dataTransfer.files;
+
+            handleFileSelect(file);
+            closeModal();
+        }, 'image/jpeg', 0.8);
+    });
+
+    // Fayl bilan ishlash
+    function handleFileSelect(file) {
+        if (!file) return;
+
+        // Fayl hajmini tekshirish (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('Fayl hajmi 5MB dan katta bo\'lmasligi kerak!');
+            clearPreview();
+            return;
+        }
+
+        // Fayl turini tekshirish
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedTypes.includes(file.type)) {
+            alert('Faqat rasm fayllari (JPEG, PNG, GIF, WebP) qabul qilinadi!');
+            clearPreview();
+            return;
+        }
+
+        // Preview ko'rsatish
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImg.src = e.target.result;
+            imagePreview.classList.remove('hidden');
+            
+            const fileSize = (file.size / 1024 / 1024).toFixed(2);
+            fileInfo.textContent = `${file.name} (${fileSize} MB)`;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Preview tozalash
+    function clearPreview() {
+        profileImageInput.value = '';
+        imagePreview.classList.add('hidden');
+        previewImg.src = '';
+        fileInfo.textContent = '';
+    }
+
+    // Rasmni o'chirish
+    removeImageBtn.addEventListener('click', clearPreview);
+
+    // Form validatsiyasi
+    document.querySelector('form').addEventListener('submit', (e) => {
+        if (!profileImageInput.files || profileImageInput.files.length === 0) {
+            e.preventDefault();
+            alert('Profil rasmi tanlash majburiy!');
+            return false;
+        }
+    });
+
+    // Modal tashqarisiga bosganda yopish
+    cameraModal.addEventListener('click', (e) => {
+        if (e.target === cameraModal) {
+            closeModal();
+        }
+    });
+
+    // Escape tugmasi bilan yopish
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !cameraModal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
+});
+</script>
+
+<style>
+/* Multiple select elementlari uchun qo'shimcha stil */
+select[multiple] {
+    min-height: 80px;
+}
+
+/* Animatsiyalar */
+.transition-colors {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Preview rasm uchun hover effekti */
+#imagePreview img {
+    transition: transform 0.2s ease;
+}
+
+#imagePreview img:hover {
+    transform: scale(1.02);
+}
+
+/* Modal animatsiyasi */
+#cameraModal {
+    backdrop-filter: blur(4px);
+}
+
+/* Loading spinner */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+</style>
 {% endblock %}

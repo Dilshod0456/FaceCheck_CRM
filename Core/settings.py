@@ -191,6 +191,8 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+FACE_RECOGNITION_TOLERANCE = 0.5
+ATTENDANCE_INTERVAL = 10
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

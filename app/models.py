@@ -2,6 +2,15 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
+import numpy as np
+import face_recognition
+import cv2
+from django.core.files.storage import default_storage
+import logging
+import time
+logger = logging.getLogger(__name__)
+
+
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -11,7 +20,7 @@ class CustomUser(AbstractUser):
         ('student', 'O\'quvchi'),
         ('parent', 'Ota-ona'),
     )
-    
+
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES)
     phone_number = models.CharField(max_length=15, blank=True)
     profile_image = models.ImageField(upload_to='profile_pictures/', null=False, blank=False)
@@ -26,40 +35,66 @@ class CustomUser(AbstractUser):
             raise ValidationError('Profile image majburiy!')
         super().clean()
 
+    def extract_face_encoding(self, image_path):
+        try:
+            img = cv2.imread(image_path)
+            if img is None:
+                logger.warning(f"Image could not be read: {image_path}")
+                return None
+
+            rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            face_locations = face_recognition.face_locations(rgb_img)
+
+            if not face_locations:
+                logger.info("No face detected in the image.")
+                return None
+
+            # 1-chi yuz koordinatasini olish
+            top, right, bottom, left = face_locations[0]
+
+            # ✅ To‘g‘ri argument bilan encoding olish
+            encodings = face_recognition.face_encodings(rgb_img, known_face_locations=[(top, right, bottom, left)])
+
+            if encodings:
+                return np.asarray(encodings[0], dtype=np.float64).tobytes()
+        except Exception as e:
+            logger.error(f"Error during face encoding extraction: {e}")
+        return None
+
     def save(self, *args, **kwargs):
-        # Profile image o‘zgarganda encoding yangilash
-        from django.core.files.storage import default_storage
-        import numpy as np
-        import face_recognition
-        import cv2
-        update_encoding = False
-        if self.pk:
-            old = type(self).objects.filter(pk=self.pk).first()
-            if old and old.profile_image != self.profile_image:
-                update_encoding = True
+        is_new = self._state.adding
+        profile_changed = False
+
+        if not is_new:
+            try:
+                old = type(self).objects.get(pk=self.pk)
+                profile_changed = old.profile_image != self.profile_image
+            except type(self).DoesNotExist:
+                profile_changed = True
         else:
-            update_encoding = True
+            profile_changed = True
+
+        # STEP 1: Avval Fayl kirish uchun rasmni saqlang
         super().save(*args, **kwargs)
-        if update_encoding and self.profile_image:
+        # STEP 2: Endi yuz kodlash (faqat yangi yoki yangilangan bo'lsa)
+        if profile_changed and self.profile_image:
             try:
                 path = self.profile_image.path if hasattr(self.profile_image, 'path') else default_storage.path(self.profile_image.name)
-                img = cv2.imread(path)
-                if img is not None:
-                    rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-                    encodings = face_recognition.face_encodings(rgb_img)
-                    if encodings:
-                        encoding_bytes = np.asarray(encodings[0]).tobytes()
-                        if isinstance(encoding_bytes, bytes):
-                            self.face_encoding = encoding_bytes
-                        else:
-                            self.face_encoding = None
-                        super().save(update_fields=['face_encoding'])
-                    else:
-                        self.face_encoding = None
-                        super().save(update_fields=['face_encoding'])
-            except Exception:
+                encoding = self.extract_face_encoding(path)
+
+                if encoding and isinstance(encoding, (bytes, bytearray, memoryview)):
+                    self.face_encoding = encoding
+                else:
+                    self.face_encoding = None
+
+                # Only update face_encoding field
+                super().save(update_fields=['face_encoding'])
+
+            except Exception as e:
+                logger.error(f"Failed to update face encoding: {e}")
                 self.face_encoding = None
                 super().save(update_fields=['face_encoding'])
+
 
 class Department(models.Model):
     name = models.CharField(_('Bo\'lim nomi'), max_length=100)

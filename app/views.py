@@ -586,6 +586,7 @@ def student_edit(request, pk):
         user.last_name = request.POST.get('last_name')
         user.email = request.POST.get('email')
         user.phone_number = request.POST.get('phone_number')
+        user.profile_image = request.FILES.get('profile_image')
         
         if request.POST.get('password'):
             user.set_password(request.POST.get('password'))
